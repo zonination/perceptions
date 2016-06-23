@@ -1,6 +1,6 @@
 # Perceptions of Probability and Numbers
 
-[This Reddit post]() made the Longlist for the 2014 Kantar Information is Beautiful Awards: [Link](http://www.informationisbeautifulawards.com/showcase/818-perceptions-of-probability)
+[This Reddit post]() made the Longlist for the 2015 Kantar Information is Beautiful Awards: [Link](http://www.informationisbeautifulawards.com/showcase/818-perceptions-of-probability)
 
 ## About
 
