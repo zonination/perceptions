@@ -1,17 +1,17 @@
 #Import files, load plot and data packages, fire up the number machine.
-setwd("~/Dropbox/R/Perceptions of Probability")
+# setwd("~/Dropbox/R/Perceptions of Probability")
 probly <- read.csv("probly.csv", stringsAsFactors=FALSE)
 numberly <- read.csv("numberly.csv", stringsAsFactors=FALSE)
-library(ggplot2)
-library(reshape2)
+library(tidyverse)
+library(ggjoy)
 library(scales)
-library(RColorBrewer)
 
 #Melt data into column format.
-numberly <- melt(numberly)
+numberly <- gather(numberly, "variable", "value", 1:10)
 numberly$variable <- gsub("[.]"," ",numberly$variable)
-probly <- melt(probly)
+probly <- gather(probly, "variable", "value", 1:17)
 probly$variable <- gsub("[.]"," ",probly$variable)
+probly$value<-probly$value/100 # convert to %
 
 #Order in the court!
 probly$variable <- factor(probly$variable,
@@ -45,61 +45,58 @@ numberly$variable <- factor(numberly$variable,
                               "Fractions of"))
 
 #Modify Theme:
-z_theme <- function() {
-    # Generate the colors for the chart procedurally with RColorBrewer
-  palette <- brewer.pal("Greys", n=9)
-  color.background = palette[2]
-  color.grid.major = palette[5]
-  color.axis.text = palette[7]
-  color.axis.title = palette[7]
-  color.title = palette[8]
-    # Begin construction of chart
-  theme_bw(base_size=9) +
-        # Set the entire chart region to a light gray color
-    theme(panel.background=element_rect(fill=color.background, color=color.background)) +
-    theme(plot.background=element_rect(fill=color.background, color=color.background)) +
-    theme(panel.border=element_rect(color=color.background)) +
-        # Format the grid
-    theme(panel.grid.major=element_line(color=color.grid.major,size=.25)) +
-    theme(panel.grid.minor=element_blank()) +
-    theme(axis.ticks=element_blank()) +
-        # Format the legend, but hide by default
-    theme(legend.position="none") +
-    theme(legend.background = element_rect(fill=color.background)) +
-    theme(legend.text = element_text(size=7,color=color.axis.title)) +
-        # Set title and axis labels, and format these and tick marks
-    theme(plot.title=element_text(color=color.title, size=20, vjust=1.25)) +
-    theme(axis.text.x=element_text(size=14,color=color.axis.text)) +
-    theme(axis.text.y=element_text(size=14,color=color.axis.text)) +
-    theme(axis.title.x=element_text(size=16,color=color.axis.title, vjust=0)) +
-    theme(axis.title.y=element_text(size=16,color=color.axis.title, vjust=1.25))
-}
+source("ztheme.R")
 
 #Plot probability data
-png(file='plot1.png', width = 800, height = 800)
 ggplot(probly,aes(variable,value))+
   geom_boxplot(aes(fill=variable),alpha=.5)+
-  geom_jitter(aes(color=variable),size=4,alpha=.2)+
-  coord_flip()+
+  geom_jitter(aes(color=variable),size=3,alpha=.2)+
+  scale_y_continuous(breaks=seq(0,1,.1), labels=scales::percent)+
   guides(fill=FALSE,color=FALSE)+
-  xlab("Phrase")+
-  ylab("Assigned Probability (%)")+
-  z_theme()+
-  scale_y_continuous(breaks=seq(0,100,10))+
-  ggtitle("Perceptions of Probability")
-dev.off()
+  labs(title="Perceptions of Probability",
+       x="Phrase",
+       y="Assigned Probability",
+       caption="created by /u/zonination")+
+  coord_flip()+
+  z_theme()
+ggsave("plot1.png", height=8, width=8, dpi=120, type="cairo-png")
 
 #Plot numberly data
-png(file='plot2.png', width = 800, height = 500)
 ggplot(numberly,aes(variable,value))+
   geom_boxplot(aes(fill=variable),alpha=0.5)+
-  geom_jitter(aes(color=variable),size=4,alpha=.2)+
+  geom_jitter(aes(color=variable),size=3,alpha=.2)+
   scale_y_log10(labels=trans_format("log10",math_format(10^.x)),
-                breaks=c(.01,.1,1,10,100,1000,10000,100000))+
+                breaks=10^(-2:6))+
   guides(fill=FALSE,color=FALSE)+
-  xlab("Phrase")+
-  z_theme()+
-  ylab("Assigned Number")+
+  labs(title="Perceptions of Probability",
+       x="Phrase",
+       y="Assigned Number",
+       caption="created by /u/zonination")+
   coord_flip()+
-  ggtitle("Perceptions of Numbers")
-dev.off()
+  z_theme()
+ggsave("plot2.png", height=5, width=8, dpi=120, type="cairo-png")
+
+# Joyplot for probly
+ggplot(probly,aes(y=variable,x=value))+
+  geom_joy(scale=4, aes(fill=variable), alpha=3/4)+
+  scale_x_continuous(breaks=seq(0,1,.1), labels=scales::percent)+
+  guides(fill=FALSE,color=FALSE)+
+  labs(title="Perceptions of Probability",
+       y="",
+       x="Assigned Probability",
+       caption="created by /u/zonination")+
+  z_theme()
+ggsave("joy1.png", height=8, width=8, dpi=120, type="cairo-png")
+
+#Joyplot for numberly
+ggplot(numberly,aes(y=variable,x=value))+
+  geom_joy(aes(fill=variable, alpha=3/4))+
+  scale_x_log10(labels=trans_format("log10",math_format(10^.x)),
+                breaks=10^(-2:6))+
+  guides(fill=FALSE,color=FALSE)+
+  labs(title="Perceptions of Probability",
+       x="Assigned Number",
+       y="",
+       caption="created by /u/zonination")+
+  z_theme()
+ggsave("joy2.png", height=5, width=8, dpi=120, type="cairo-png")
