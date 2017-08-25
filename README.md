@@ -25,6 +25,12 @@ Sherman-Kent Study:
 
 ![Additional survey questions](https://raw.githubusercontent.com/zonination/perceptions/master/plot2.png)
 
+With the new ggjoy package:
+
+![Reproduction of the Sherman-Kent Study (joyplot)](https://raw.githubusercontent.com/zonination/perceptions/master/joy1.png)
+
+![Additional survey questions (joyplot)](https://raw.githubusercontent.com/zonination/perceptions/master/joy2.png)
+
 ## Information
 
 * Tool: The data was compiled with R, and graphed in ggplot2.
