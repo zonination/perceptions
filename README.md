@@ -2,6 +2,11 @@
 
 [This Reddit post](https://www.reddit.com/r/dataisbeautiful/comments/3hi7ul/oc_what_someone_interprets_when_you_say_probably/) made the Longlist for the 2015 Kantar Information is Beautiful Awards: [Link](http://www.informationisbeautifulawards.com/showcase/818-perceptions-of-probability)
 
+This was last updated on 2017-08-25 ([reddit thread](https://www.reddit.com/r/dataisbeautiful/comments/6vythg/i_redid_my_perceptions_of_probability_and_numbers/)) in order to:
+
+1. Update the code for ggplot version 2.2.1
+2. Add a couple of joyplots through the ggjoy package.
+
 ## About
 
 These are a couple of polls inspired by the Sherman Kent CIA study shown in the images below (discussion in [this thread](https://np.reddit.com/r/dataisbeautiful/comments/3gmj6h/probable_is_a_vague_word_but_this_image_helps_ive/ctzgwhm)). I was super happy when they matched up.
@@ -20,10 +25,7 @@ Sherman-Kent Study:
 
 ![Additional survey questions](https://raw.githubusercontent.com/zonination/perceptions/master/plot2.png)
 
-## Tools
+## Information
 
-The data was compiled with R, and graphed in ggplot2.
-
-## Source
-
-This data was gathered using Reddit's /r/samplesize community.
+* Tool: The data was compiled with R, and graphed in ggplot2.
+* Source: This data was gathered using Reddit's /r/samplesize community.
